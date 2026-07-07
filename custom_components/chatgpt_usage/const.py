@@ -1,0 +1,39 @@
+"""Constants for the ChatGPT Usage integration."""
+
+from __future__ import annotations
+
+from datetime import timedelta
+
+DOMAIN = "chatgpt_usage"
+NAME = "ChatGPT Usage"
+VERSION = "1.1.0"
+
+CONF_MODE = "mode"
+CONF_API_KEY = "api_key"
+CONF_ORG_ID = "org_id"
+CONF_PROJECT_ID = "project_id"
+CONF_CURRENCY = "currency"
+CONF_SCAN_INTERVAL = "scan_interval"
+CONF_ENABLE_CODEX = "enable_codex"
+CONF_MQTT_PREFIX = "mqtt_prefix"
+CONF_DAILY_COST_ALERT = "daily_cost_alert"
+CONF_CODEX_REMAINING_ALERT = "codex_remaining_alert"
+
+MODE_OPENAI = "openai"
+MODE_CODEX_MQTT = "codex_mqtt"
+MODE_BOTH = "both"
+MODES = [MODE_OPENAI, MODE_CODEX_MQTT, MODE_BOTH]
+
+DEFAULT_CURRENCY = "USD"
+DEFAULT_SCAN_INTERVAL = 3600
+DEFAULT_SCAN_INTERVAL_DELTA = timedelta(seconds=DEFAULT_SCAN_INTERVAL)
+DEFAULT_MQTT_PREFIX = "codex/usage"
+DEFAULT_DAILY_COST_ALERT = 2.0
+DEFAULT_CODEX_REMAINING_ALERT = 20.0
+
+OPENAI_BASE_URL = "https://api.openai.com/v1"
+OPENAI_COSTS_ENDPOINT = "/organization/costs"
+OPENAI_USAGE_COMPLETIONS_ENDPOINT = "/organization/usage/completions"
+
+PLATFORMS = ["sensor", "binary_sensor"]
+

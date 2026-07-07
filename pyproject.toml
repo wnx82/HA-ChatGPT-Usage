@@ -1,0 +1,14 @@
+[project]
+name = "ha-chatgpt-usage"
+version = "1.1.0"
+description = "Home Assistant custom integration for OpenAI API and experimental Codex usage sensors."
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+

@@ -1,0 +1,66 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "ChatGPT Usage",
+        "description": "Configure official OpenAI API usage and optional experimental Codex MQTT usage.",
+        "data": {
+          "mode": "Mode",
+          "api_key": "OpenAI Admin API key",
+          "org_id": "Organization ID",
+          "project_id": "Project ID",
+          "currency": "Currency",
+          "scan_interval": "Scan interval in seconds",
+          "enable_codex": "Enable experimental Codex sensors",
+          "mqtt_prefix": "Codex MQTT prefix"
+        }
+      }
+    },
+    "error": {
+      "api_key_required": "An OpenAI Admin API key is required for OpenAI API usage mode."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "ChatGPT Usage options",
+        "data": {
+          "org_id": "Organization ID",
+          "project_id": "Project ID",
+          "currency": "Currency",
+          "scan_interval": "Scan interval in seconds",
+          "enable_codex": "Enable experimental Codex sensors",
+          "mqtt_prefix": "Codex MQTT prefix",
+          "daily_cost_alert": "Daily cost alert threshold",
+          "codex_remaining_alert": "Codex remaining alert threshold"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "cost_today": {"name": "Cost today"},
+      "cost_yesterday": {"name": "Cost yesterday"},
+      "cost_current_month": {"name": "Cost current month"},
+      "cost_last_7_days": {"name": "Cost last 7 days"},
+      "requests_today": {"name": "Requests today"},
+      "input_tokens_today": {"name": "Input tokens today"},
+      "output_tokens_today": {"name": "Output tokens today"},
+      "total_tokens_today": {"name": "Total tokens today"},
+      "last_update": {"name": "Last update"},
+      "codex_5h_used": {"name": "Codex 5h used"},
+      "codex_5h_remaining_percent": {"name": "Codex 5h remaining percent"},
+      "codex_5h_reset": {"name": "Codex 5h reset"},
+      "codex_weekly_used": {"name": "Codex weekly used"},
+      "codex_weekly_remaining_percent": {"name": "Codex weekly remaining percent"},
+      "codex_weekly_reset": {"name": "Codex weekly reset"},
+      "codex_plan": {"name": "Codex plan"},
+      "codex_credits": {"name": "Codex credits"},
+      "codex_limit_status": {"name": "Codex limit status"},
+      "codex_last_update": {"name": "Codex last update"}
+    },
+    "binary_sensor": {
+      "api_status": {"name": "API status"}
+    }
+  }
+}
