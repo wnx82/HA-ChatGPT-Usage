@@ -81,3 +81,19 @@
 
 - Branche : `fix/v1.2.1-codex-mqtt-unavailable`
 - Commande apres merge : `git revert <commit>`
+
+## 2026-07-07 14:40 Europe/Brussels - v1.2.2
+
+### Objectif
+
+- Finaliser les notes de release apres les merges et tags reels.
+
+### Decisions techniques
+
+- Garder une etape documentaire dediee pour ne pas modifier l'historique deja tague.
+- Incrementation patch `z` uniquement, sans changement de version majeure ni mineure.
+
+### Rollback
+
+- Branche : `docs/v1.2.2-finalize-release-notes`
+- Commande apres merge : `git revert <commit>`

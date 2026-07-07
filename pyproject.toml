@@ -1,6 +1,6 @@
 [project]
 name = "ha-chatgpt-usage"
-version = "1.2.1"
+version = "1.2.2"
 description = "Home Assistant custom integration for OpenAI API and experimental Codex usage sensors."
 requires-python = ">=3.11"
 
