@@ -1,5 +1,36 @@
 # PROJECT_LOG
 
+## 2026-07-07 16:45 Europe/Brussels - v1.4.0
+
+### Objectif
+
+- Ajouter un companion web local qui ouvre ChatGPT, laisse le login manuel, puis ecrit le fichier JSON Codex sans MQTT.
+
+### Criteres d'acceptation
+
+- Le projet fournit un script local executable pour ouvrir un navigateur.
+- Le script ecrit un JSON compatible avec l'integration Home Assistant.
+- Le script peut reutiliser un profil navigateur persistant local.
+- Les tests Python existants et les tests Node du parser passent.
+
+### Decisions techniques
+
+- Utilisation de Playwright pour un navigateur local pilotable mais avec authentification humaine.
+- Conservation du decouplage : Home Assistant continue de lire un fichier JSON, sans embarquer la logique de login web.
+- Le parser du companion s'appuie sur le texte visible et les progress bars pour limiter le couplage DOM.
+
+### Commandes importantes
+
+- `npm install`
+- `npm test`
+- `npx playwright install chromium`
+- `node scripts/codex-web-companion.mjs --help`
+
+### Rollback
+
+- Branche : `feature/v1.4.0-codex-web-companion`
+- Commande apres merge : `git revert <commit>`
+
 ## 2026-07-07 15:05 Europe/Brussels - v1.3.0
 
 ### Objectif

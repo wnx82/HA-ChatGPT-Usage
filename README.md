@@ -1,6 +1,6 @@
 # ChatGPT Usage
 
-Version actuelle : `1.3.0`
+Version actuelle : `1.4.0`
 
 ChatGPT Usage est une integration Home Assistant custom compatible HACS pour afficher l'usage OpenAI API officiel et des informations Codex experimentales via MQTT ou un fichier JSON local.
 
@@ -19,6 +19,7 @@ ChatGPT Usage est une integration Home Assistant custom compatible HACS pour aff
 - Requetes et tokens input/output du jour si disponibles via les endpoints OpenAI.
 - Statut de connectivite API.
 - Capteurs Codex experimentaux alimentes par MQTT ou un fichier JSON local.
+- Companion web local pour ouvrir ChatGPT, te laisser te connecter manuellement, puis ecrire le JSON Codex pour Home Assistant.
 - Diagnostics Home Assistant avec masquage des secrets.
 
 ## Installation
@@ -64,6 +65,31 @@ Exemple de fichier `/config/chatgpt_usage_codex.json` :
 ```
 
 Home Assistant relit ce fichier selon `scan_interval`.
+
+## Companion web local
+
+Le companion web ouvre un vrai navigateur Chromium, te laisse te connecter toi-meme a ChatGPT, puis capture la page `Codex Settings > Usage Dashboard` pour ecrire le fichier JSON local.
+
+Installation du companion :
+
+```bash
+npm install
+npx playwright install chromium
+```
+
+Execution manuelle :
+
+```bash
+npm run codex:companion -- --out /config/chatgpt_usage_codex.json
+```
+
+Mode surveillance continue :
+
+```bash
+npm run codex:companion -- --out /config/chatgpt_usage_codex.json --watch-seconds 300
+```
+
+Le profil navigateur persistant est stocke dans `.codex-web-companion/profile` pour eviter de te reconnecter a chaque fois. Ce dossier est ignore par Git.
 
 ## Topics MQTT Codex
 
@@ -215,8 +241,9 @@ action:
 
 ```bash
 python3 -m pytest
+npm test
 ```
 
 ## Notes developpement
 
-Les endpoints utilises sont les endpoints officiels d'organisation OpenAI pour les couts et l'usage completions. Le mode Codex est separe car il n'existe pas d'API publique officielle documentee pour l'usage ChatGPT/Codex personnel.
+Les endpoints utilises sont les endpoints officiels d'organisation OpenAI pour les couts et l'usage completions. Le mode Codex est separe car il n'existe pas d'API publique officielle documentee pour l'usage ChatGPT/Codex personnel. Le companion web local repose sur une capture best-effort de la page web ChatGPT, donc il peut necessiter des ajustements si l'interface evolue.

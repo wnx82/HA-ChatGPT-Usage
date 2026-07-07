@@ -1,0 +1,13 @@
+{
+  "name": "ha-chatgpt-usage-companion",
+  "version": "1.4.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "codex:companion": "node scripts/codex-web-companion.mjs",
+    "test": "node --test scripts/*.test.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.54.2"
+  }
+}

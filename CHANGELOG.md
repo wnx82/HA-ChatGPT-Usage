@@ -1,5 +1,39 @@
 # CHANGELOG
 
+## [1.4.0] - 2026-07-07 16:45 Europe/Brussels
+
+### Branche
+feature/v1.4.0-codex-web-companion
+
+### Changements
+- Ajout d'un companion web local base sur Playwright pour ouvrir ChatGPT et alimenter le fichier Codex JSON.
+- Ajout d'un parser Node teste pour extraire au mieux les limites 5h, hebdo, credits et plan depuis la page d'usage Codex.
+- Mise a jour de la documentation et des regles de securite pour le profil navigateur local.
+
+### Fichiers modifies
+- `package.json`
+- `scripts/codex-web-companion.mjs`
+- `scripts/codex-page-parser.mjs`
+- `scripts/codex-page-parser.test.mjs`
+- `.gitignore`
+- `README.md`
+- `SECURITY.md`
+- `CHANGELOG.md`
+- `PROJECT_LOG.md`
+- `TODO.md`
+
+### Tests
+- `python3 -m pytest` : OK, 8 tests passes.
+- `python3 -m compileall custom_components tests` : OK.
+- `npm test` : OK, 2 tests passes.
+- `npx playwright install chromium` : OK.
+
+### Merge
+- Branche a merger dans `main` apres validation du commit.
+
+### Notes
+- Le companion ouvre un navigateur local et laisse l'authentification a l'utilisateur.
+
 ## [1.3.0] - 2026-07-07 15:05 Europe/Brussels
 
 ### Branche

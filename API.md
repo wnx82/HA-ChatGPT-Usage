@@ -39,6 +39,8 @@ Cles attendues :
 - `limit_status`
 - `last_update`
 
+Le companion web local `npm run codex:companion` peut alimenter ce fichier automatiquement apres authentification manuelle dans ChatGPT.
+
 ## MQTT Codex experimental
 
 Le mode Codex experimental attend un bridge local externe. Prefixe par defaut : `codex/usage`.
