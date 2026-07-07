@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import logging
 from typing import Any
 
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity, SensorEntityDescription, SensorStateClass
@@ -13,7 +14,7 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .codex import parse_codex_payload
+from .codex import parse_codex_payload, parse_codex_timestamp
 from .const import (
     CONF_ENABLE_CODEX,
     CONF_MODE,
@@ -23,6 +24,8 @@ from .const import (
     DOMAIN,
     MODE_CODEX_MQTT,
 )
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -135,6 +138,7 @@ class ChatGPTCodexMqttSensor(SensorEntity):
         self._entry = entry
         self._native_value: Any = None
         self._topic = f"{entry.options.get(CONF_MQTT_PREFIX, entry.data.get(CONF_MQTT_PREFIX, DEFAULT_MQTT_PREFIX)).rstrip('/')}/{description.value_key}"
+        self._status = "waiting_for_bridge"
         self._attr_unique_id = f"{entry.entry_id}_{description.key}"
         self._attr_device_info = {
             "identifiers": {(DOMAIN, entry.entry_id)},
@@ -148,11 +152,20 @@ class ChatGPTCodexMqttSensor(SensorEntity):
 
         @callback
         def message_received(message: Any) -> None:
-            self._native_value = parse_codex_payload(str(message.payload))
+            parsed = parse_codex_payload(str(message.payload))
+            if self.entity_description.device_class == SensorDeviceClass.TIMESTAMP:
+                parsed = parse_codex_timestamp(parsed)
+            self._native_value = parsed
             self._attr_available = self._native_value is not None
+            self._status = "connected" if self.available else "waiting_for_bridge"
             self.async_write_ha_state()
 
-        remove_subscribe = await mqtt.async_subscribe(self.hass, self._topic, message_received, 0, "utf-8")
+        try:
+            remove_subscribe = await mqtt.async_subscribe(self.hass, self._topic, message_received, 0, "utf-8")
+        except Exception as err:  # noqa: BLE001 - HA MQTT may be absent or not configured.
+            self._status = "mqtt_unavailable"
+            _LOGGER.debug("Codex MQTT subscription unavailable for %s: %s", self._topic, err)
+            return
         self.async_on_remove(remove_subscribe)
 
     @property
@@ -167,7 +180,7 @@ class ChatGPTCodexMqttSensor(SensorEntity):
             "source": "codex_mqtt_bridge",
             "experimental": True,
             "topic": self._topic,
-            "status": "connected" if self.available else "waiting_for_bridge",
+            "status": self._status,
         }
 
     @callback
@@ -175,4 +188,5 @@ class ChatGPTCodexMqttSensor(SensorEntity):
         """Update the sensor from a parsed MQTT value."""
         self._native_value = value
         self._attr_available = True
+        self._status = "connected"
         self.async_write_ha_state()

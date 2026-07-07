@@ -10,6 +10,7 @@
 ## Termine
 - [x] Initialiser la structure HACS/Home Assistant. Version : `1.1.0`, branche : `chore/v1.1.0-initial-hacs-scaffold`.
 - [x] Implementer l'abonnement MQTT Codex reel via l'integration MQTT Home Assistant. Version : `1.2.0`, branche : `feature/v1.2.0-codex-mqtt-bridge`.
+- [x] Rendre le mode Codex robuste si MQTT est absent ou non configure. Version : `1.2.1`, branche : `fix/v1.2.1-codex-mqtt-unavailable`.
 
 ## Bugs connus
 - [ ] Aucun bug runtime confirme pour l'instant ; tests Home Assistant complets encore a ajouter.

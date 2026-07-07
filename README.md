@@ -1,6 +1,6 @@
 # ChatGPT Usage
 
-Version actuelle : `1.2.0`
+Version actuelle : `1.2.1`
 
 ChatGPT Usage est une integration Home Assistant custom compatible HACS pour afficher l'usage OpenAI API officiel et des informations Codex experimentales via un bridge MQTT local.
 

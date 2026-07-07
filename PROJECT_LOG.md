@@ -64,3 +64,20 @@
 
 - Branche : `feature/v1.2.0-codex-mqtt-bridge`
 - Commande apres merge : `git revert <commit>`
+
+## 2026-07-07 14:40 Europe/Brussels - v1.2.1
+
+### Objectif
+
+- Eviter qu'un broker MQTT absent ou non configure casse les capteurs Codex experimentaux.
+
+### Decisions techniques
+
+- Attraper les erreurs d'abonnement MQTT au niveau de chaque capteur Codex.
+- Exposer un statut `mqtt_unavailable` dans les attributs au lieu d'echouer silencieusement ou de casser le setup.
+- Convertir les timestamps ISO en objets `datetime` pour respecter le `SensorDeviceClass.TIMESTAMP`.
+
+### Rollback
+
+- Branche : `fix/v1.2.1-codex-mqtt-unavailable`
+- Commande apres merge : `git revert <commit>`
