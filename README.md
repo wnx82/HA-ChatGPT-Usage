@@ -1,8 +1,8 @@
 # ChatGPT Usage
 
-Version actuelle : `1.2.2`
+Version actuelle : `1.3.0`
 
-ChatGPT Usage est une integration Home Assistant custom compatible HACS pour afficher l'usage OpenAI API officiel et des informations Codex experimentales via un bridge MQTT local.
+ChatGPT Usage est une integration Home Assistant custom compatible HACS pour afficher l'usage OpenAI API officiel et des informations Codex experimentales via MQTT ou un fichier JSON local.
 
 ## Stack technique
 
@@ -18,7 +18,7 @@ ChatGPT Usage est une integration Home Assistant custom compatible HACS pour aff
 - Cout OpenAI API du jour, d'hier, du mois courant et des 7 derniers jours.
 - Requetes et tokens input/output du jour si disponibles via les endpoints OpenAI.
 - Statut de connectivite API.
-- Capteurs Codex experimentaux alimentes par un bridge MQTT local.
+- Capteurs Codex experimentaux alimentes par MQTT ou un fichier JSON local.
 - Diagnostics Home Assistant avec masquage des secrets.
 
 ## Installation
@@ -36,9 +36,34 @@ Parametres principaux :
 - `Project ID` : optionnel.
 - `Currency` : `USD` par defaut.
 - `Scan interval` : `3600` secondes par defaut, minimum `300`.
-- `Codex MQTT prefix` : `codex/usage` par defaut.
+- `Codex source` : `file` par defaut, ou `mqtt`.
+- `Codex local JSON file path` : `/config/chatgpt_usage_codex.json` par defaut.
+- `Codex MQTT prefix` : `codex/usage` par defaut si tu choisis MQTT.
 
 Le mode Codex est experimental. Il ne demande jamais de mot de passe ChatGPT et ne stocke aucun cookie ou token de session ChatGPT.
+
+## Mode Codex sans MQTT
+
+Le chemin le plus simple sans MQTT est un fichier JSON local mis a jour par un script compagnon sur la machine qui connait deja ton usage Codex.
+
+Exemple de fichier `/config/chatgpt_usage_codex.json` :
+
+```json
+{
+  "5h_used": 42,
+  "5h_remaining_percent": 18,
+  "5h_reset": "2026-07-07T15:00:00Z",
+  "weekly_used": 310,
+  "weekly_remaining_percent": 44,
+  "weekly_reset": "2026-07-13T00:00:00Z",
+  "plan": "pro",
+  "credits": 12.5,
+  "limit_status": "limited",
+  "last_update": "2026-07-07T14:30:00Z"
+}
+```
+
+Home Assistant relit ce fichier selon `scan_interval`.
 
 ## Topics MQTT Codex
 
@@ -189,7 +214,7 @@ action:
 ## Commandes utiles
 
 ```bash
-pytest
+python3 -m pytest
 ```
 
 ## Notes developpement
