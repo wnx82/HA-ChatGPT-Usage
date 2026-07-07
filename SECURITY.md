@@ -7,6 +7,7 @@
 - Ne jamais stocker de cookie ou session token ChatGPT non chiffre.
 - Utiliser le mecanisme Home Assistant config entry pour la cle API.
 - Masquer les secrets dans `diagnostics.py`.
+- Le companion web local doit utiliser un profil navigateur local ignore par Git, jamais un export manuel de cookies ou tokens.
 
 ## Fichiers `.env`
 
@@ -58,4 +59,4 @@ Apres suppression de secrets, prevenir les collaborateurs, verifier les forks, f
 - Logs contenant tokens, cookies, cles API ou mots de passe.
 - Ajout automatique de tous les fichiers `.env*`.
 - Actions destructives sans confirmation explicite.
-
+- Commit du dossier `.codex-web-companion/` ou de tout profil navigateur local.

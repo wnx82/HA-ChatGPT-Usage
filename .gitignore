@@ -11,3 +11,5 @@ venv/
 .env.local
 .env.production
 .env.staging
+node_modules/
+.codex-web-companion/

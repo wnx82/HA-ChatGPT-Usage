@@ -6,7 +6,7 @@ from datetime import timedelta
 
 DOMAIN = "chatgpt_usage"
 NAME = "ChatGPT Usage"
-VERSION = "1.3.0"
+VERSION = "1.4.0"
 
 CONF_MODE = "mode"
 CONF_API_KEY = "api_key"
