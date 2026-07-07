@@ -1,5 +1,36 @@
 # CHANGELOG
 
+## [1.2.2] - 2026-07-07 14:40 Europe/Brussels
+
+### Branche
+docs/v1.2.2-finalize-release-notes
+
+### Changements
+- Finalisation des notes de release apres merges reels dans `main`.
+- Mise a jour de la version documentaire/projet en `1.2.2`.
+- Clarification du statut final des branches, tags et tests.
+
+### Fichiers modifies
+- `CHANGELOG.md`
+- `PROJECT_LOG.md`
+- `TODO.md`
+- `README.md`
+- `custom_components/chatgpt_usage/manifest.json`
+- `custom_components/chatgpt_usage/const.py`
+- `pyproject.toml`
+
+### Tests
+- `python3 -m pytest` : OK, 7 tests passes.
+- `python3 -m compileall custom_components tests` : OK.
+- `npm run lint` : non disponible, aucun `package.json`.
+- `npm run build` : non disponible, aucun `package.json`.
+
+### Merge
+- Branche a merger dans `main` apres validation du commit.
+
+### Notes
+- Etape documentaire uniquement.
+
 ## [1.2.1] - 2026-07-07 14:40 Europe/Brussels
 
 ### Branche
@@ -27,7 +58,8 @@ fix/v1.2.1-codex-mqtt-unavailable
 - `npm run build` : non disponible, aucun `package.json`.
 
 ### Merge
-- Branche a merger dans `main` apres validation du commit.
+- Branche mergee dans `main` avec succes.
+- Tag `v1.2.1` cree et pousse.
 
 ### Notes
 - Aucun secret reel ajoute.
@@ -62,7 +94,8 @@ feature/v1.2.0-codex-mqtt-bridge
 - `npm run build` : non disponible, aucun `package.json`.
 
 ### Merge
-- Branche a merger dans `main` apres validation du commit.
+- Branche mergee dans `main` avec succes.
+- Tag `v1.2.0` cree et pousse.
 
 ### Notes
 - `git pull origin main` impossible avant branche : `origin/main` n'existe pas encore.
@@ -99,7 +132,8 @@ chore/v1.1.0-initial-hacs-scaffold
 - `npm run build` : non disponible, aucun `package.json`.
 
 ### Merge
-- Branche a merger dans `main` apres validation du commit.
+- Branche integree comme premier commit de `main` avec succes.
+- Tag `v1.1.0` cree et pousse.
 
 ### Notes
 - Depot distant sans branche `main` au demarrage.
