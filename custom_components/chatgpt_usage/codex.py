@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import UTC, datetime
 import json
 from typing import Any
 
@@ -36,3 +37,18 @@ def parse_codex_payload(payload: str) -> Any:
             return decoded
     return decoded
 
+
+def parse_codex_timestamp(value: Any) -> datetime | Any:
+    """Convert ISO timestamp strings to timezone-aware datetimes."""
+    if not isinstance(value, str):
+        return value
+    normalized = value.strip()
+    if normalized.endswith("Z"):
+        normalized = f"{normalized[:-1]}+00:00"
+    try:
+        parsed = datetime.fromisoformat(normalized)
+    except ValueError:
+        return value
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=UTC)
+    return parsed
