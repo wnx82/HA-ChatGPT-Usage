@@ -6,7 +6,7 @@ from datetime import timedelta
 
 DOMAIN = "chatgpt_usage"
 NAME = "ChatGPT Usage"
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 
 CONF_MODE = "mode"
 CONF_API_KEY = "api_key"
@@ -36,4 +36,3 @@ OPENAI_COSTS_ENDPOINT = "/organization/costs"
 OPENAI_USAGE_COMPLETIONS_ENDPOINT = "/organization/usage/completions"
 
 PLATFORMS = ["sensor", "binary_sensor"]
-

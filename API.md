@@ -37,3 +37,7 @@ Topics cibles recommandes :
 - `codex/usage/limit_status`
 - `codex/usage/last_update`
 
+Payloads acceptes :
+
+- valeur brute : `42`, `18.5`, `plus`, `limited`
+- JSON avec cle `value` : `{"value": 18.5}`

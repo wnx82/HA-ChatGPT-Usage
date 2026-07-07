@@ -3,10 +3,11 @@
   "name": "ChatGPT Usage",
   "codeowners": ["@wnx82"],
   "config_flow": true,
+  "after_dependencies": ["mqtt"],
   "dependencies": [],
   "documentation": "https://github.com/wnx82/HA-ChatGPT-Usage",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/wnx82/HA-ChatGPT-Usage/issues",
   "requirements": [],
-  "version": "1.1.0"
+  "version": "1.2.0"
 }

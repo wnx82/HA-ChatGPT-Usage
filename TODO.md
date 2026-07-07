@@ -1,7 +1,6 @@
 # TODO
 
 ## A faire
-- [ ] Implementer l'abonnement MQTT Codex reel via l'integration MQTT Home Assistant.
 - [ ] Ajouter des tests Home Assistant complets du config flow avec `pytest-homeassistant-custom-component`.
 - [ ] Valider les schemas exacts des endpoints OpenAI Usage contre des reponses reelles anonymisees.
 
@@ -10,11 +9,16 @@
 
 ## Termine
 - [x] Initialiser la structure HACS/Home Assistant. Version : `1.1.0`, branche : `chore/v1.1.0-initial-hacs-scaffold`.
+- [x] Implementer l'abonnement MQTT Codex reel via l'integration MQTT Home Assistant. Version : `1.2.0`, branche : `feature/v1.2.0-codex-mqtt-bridge`.
 
 ## Bugs connus
 - [ ] Aucun bug runtime confirme pour l'instant ; tests Home Assistant complets encore a ajouter.
 
 ## Ameliorations possibles
+- [ ] Ajouter des tests d'entites MQTT avec Home Assistant et un broker simule.
+  - Contexte : le parsing est teste, mais l'abonnement Home Assistant complet depend de l'environnement HA.
+  - Priorite : haute.
+  - Detecte pendant : `feature/v1.2.0-codex-mqtt-bridge`.
 - [ ] Ajouter une carte dashboard packagee ou un blueprint Lovelace.
   - Contexte : faciliter l'installation pour les utilisateurs Home Assistant.
   - Priorite : moyenne.
