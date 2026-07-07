@@ -15,6 +15,7 @@ Copier `custom_components/chatgpt_usage` dans le dossier `config/custom_componen
 - Cle API OpenAI admin : configuree via l'interface Home Assistant.
 - Organisation/projet : optionnels via config flow/options flow.
 - MQTT Codex : prefixe `codex/usage` par defaut.
+- Broker MQTT Home Assistant requis pour le mode Codex MQTT Bridge.
 
 ## Ports
 
@@ -46,5 +47,4 @@ git revert <commit>
 - Les capteurs OpenAI se creent.
 - `binary_sensor.chatgpt_usage_api_status` est disponible.
 - Les diagnostics ne contiennent pas de secret.
-- Les capteurs Codex restent indisponibles si aucun bridge MQTT n'est present.
-
+- Les capteurs Codex restent indisponibles si aucun bridge MQTT ne publie les topics attendus.

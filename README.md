@@ -1,6 +1,6 @@
 # ChatGPT Usage
 
-Version actuelle : `1.1.0`
+Version actuelle : `1.2.0`
 
 ChatGPT Usage est une integration Home Assistant custom compatible HACS pour afficher l'usage OpenAI API officiel et des informations Codex experimentales via un bridge MQTT local.
 
@@ -18,7 +18,7 @@ ChatGPT Usage est une integration Home Assistant custom compatible HACS pour aff
 - Cout OpenAI API du jour, d'hier, du mois courant et des 7 derniers jours.
 - Requetes et tokens input/output du jour si disponibles via les endpoints OpenAI.
 - Statut de connectivite API.
-- Capteurs Codex experimentaux prepares pour un bridge MQTT local.
+- Capteurs Codex experimentaux alimentes par un bridge MQTT local.
 - Diagnostics Home Assistant avec masquage des secrets.
 
 ## Installation
@@ -39,6 +39,29 @@ Parametres principaux :
 - `Codex MQTT prefix` : `codex/usage` par defaut.
 
 Le mode Codex est experimental. Il ne demande jamais de mot de passe ChatGPT et ne stocke aucun cookie ou token de session ChatGPT.
+
+## Topics MQTT Codex
+
+Prefixe par defaut : `codex/usage`.
+
+L'integration s'abonne aux topics suivants :
+
+- `codex/usage/5h_used`
+- `codex/usage/5h_remaining_percent`
+- `codex/usage/5h_reset`
+- `codex/usage/weekly_used`
+- `codex/usage/weekly_remaining_percent`
+- `codex/usage/weekly_reset`
+- `codex/usage/plan`
+- `codex/usage/credits`
+- `codex/usage/limit_status`
+- `codex/usage/last_update`
+
+Chaque payload peut etre une valeur brute (`42`, `18.5`, `plus`) ou un objet JSON contenant une cle `value`, par exemple :
+
+```json
+{"value": 18.5, "updated_at": "2026-07-07T12:00:00Z"}
+```
 
 ## Variables d'environnement
 
@@ -172,4 +195,3 @@ pytest
 ## Notes developpement
 
 Les endpoints utilises sont les endpoints officiels d'organisation OpenAI pour les couts et l'usage completions. Le mode Codex est separe car il n'existe pas d'API publique officielle documentee pour l'usage ChatGPT/Codex personnel.
-

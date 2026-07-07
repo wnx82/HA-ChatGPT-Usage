@@ -13,9 +13,12 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
+from .codex import parse_codex_payload
 from .const import (
     CONF_ENABLE_CODEX,
     CONF_MODE,
+    CONF_MQTT_PREFIX,
+    DEFAULT_MQTT_PREFIX,
     DEFAULT_CURRENCY,
     DOMAIN,
     MODE_CODEX_MQTT,
@@ -121,11 +124,7 @@ class ChatGPTUsageSensor(CoordinatorEntity, SensorEntity):
 
 
 class ChatGPTCodexMqttSensor(SensorEntity):
-    """Experimental Codex MQTT placeholder sensor.
-
-    Home Assistant MQTT discovery or a future MQTT subscriber can populate matching
-    states. Until then, entities remain unavailable without breaking setup.
-    """
+    """Experimental Codex MQTT sensor."""
 
     entity_description: ChatGPTUsageSensorDescription
     _attr_has_entity_name = True
@@ -133,6 +132,9 @@ class ChatGPTCodexMqttSensor(SensorEntity):
 
     def __init__(self, entry: ConfigEntry, description: ChatGPTUsageSensorDescription) -> None:
         self.entity_description = description
+        self._entry = entry
+        self._native_value: Any = None
+        self._topic = f"{entry.options.get(CONF_MQTT_PREFIX, entry.data.get(CONF_MQTT_PREFIX, DEFAULT_MQTT_PREFIX)).rstrip('/')}/{description.value_key}"
         self._attr_unique_id = f"{entry.entry_id}_{description.key}"
         self._attr_device_info = {
             "identifiers": {(DOMAIN, entry.entry_id)},
@@ -140,10 +142,23 @@ class ChatGPTCodexMqttSensor(SensorEntity):
             "manufacturer": "OpenAI",
         }
 
+    async def async_added_to_hass(self) -> None:
+        """Subscribe to the configured MQTT topic."""
+        from homeassistant.components import mqtt
+
+        @callback
+        def message_received(message: Any) -> None:
+            self._native_value = parse_codex_payload(str(message.payload))
+            self._attr_available = self._native_value is not None
+            self.async_write_ha_state()
+
+        remove_subscribe = await mqtt.async_subscribe(self.hass, self._topic, message_received, 0, "utf-8")
+        self.async_on_remove(remove_subscribe)
+
     @property
     def native_value(self) -> Any:
         """Return the Codex value when a bridge provides it."""
-        return None
+        return self._native_value
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
@@ -151,13 +166,13 @@ class ChatGPTCodexMqttSensor(SensorEntity):
         return {
             "source": "codex_mqtt_bridge",
             "experimental": True,
-            "status": "waiting_for_bridge",
+            "topic": self._topic,
+            "status": "connected" if self.available else "waiting_for_bridge",
         }
 
     @callback
     def _handle_mqtt_update(self, value: Any) -> None:
-        """Reserved callback for future MQTT bridge updates."""
-        self._attr_native_value = value
+        """Update the sensor from a parsed MQTT value."""
+        self._native_value = value
         self._attr_available = True
         self.async_write_ha_state()
-
