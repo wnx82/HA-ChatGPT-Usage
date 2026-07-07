@@ -20,6 +20,25 @@ Ce projet n'expose aucune API HTTP locale.
 - Parametres : `start_time`, `end_time`, `bucket_width`, `group_by`
 - Usage : requetes et tokens par periode, modele et projet si disponible.
 
+## Fichier local Codex experimental
+
+Le mode Codex experimental peut lire un fichier JSON local, par defaut :
+
+- `/config/chatgpt_usage_codex.json`
+
+Cles attendues :
+
+- `5h_used`
+- `5h_remaining_percent`
+- `5h_reset`
+- `weekly_used`
+- `weekly_remaining_percent`
+- `weekly_reset`
+- `plan`
+- `credits`
+- `limit_status`
+- `last_update`
+
 ## MQTT Codex experimental
 
 Le mode Codex experimental attend un bridge local externe. Prefixe par defaut : `codex/usage`.

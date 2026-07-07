@@ -1,5 +1,39 @@
 # CHANGELOG
 
+## [1.3.0] - 2026-07-07 15:05 Europe/Brussels
+
+### Branche
+feature/v1.3.0-codex-local-file
+
+### Changements
+- Ajout d'un mode Codex local sans MQTT via un fichier JSON pollé.
+- Ajout d'une source Codex configurable : `file` ou `mqtt`.
+- Mise a jour de la configuration et de la documentation pour le mode fichier.
+
+### Fichiers modifies
+- `custom_components/chatgpt_usage/const.py`
+- `custom_components/chatgpt_usage/config_flow.py`
+- `custom_components/chatgpt_usage/coordinator.py`
+- `custom_components/chatgpt_usage/sensor.py`
+- `custom_components/chatgpt_usage/codex.py`
+- `README.md`
+- `API.md`
+- `CHANGELOG.md`
+- `PROJECT_LOG.md`
+- `TODO.md`
+
+### Tests
+- `python3 -m pytest` : OK, 8 tests passes.
+- `python3 -m compileall custom_components tests` : OK.
+- `npm run lint` : non disponible, aucun `package.json`.
+- `npm run build` : non disponible, aucun `package.json`.
+
+### Merge
+- Branche a merger dans `main` apres validation du commit.
+
+### Notes
+- Le mode MQTT existant est conserve.
+
 ## [1.2.2] - 2026-07-07 14:40 Europe/Brussels
 
 ### Branche

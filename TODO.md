@@ -12,11 +12,16 @@
 - [x] Implementer l'abonnement MQTT Codex reel via l'integration MQTT Home Assistant. Version : `1.2.0`, branche : `feature/v1.2.0-codex-mqtt-bridge`.
 - [x] Rendre le mode Codex robuste si MQTT est absent ou non configure. Version : `1.2.1`, branche : `fix/v1.2.1-codex-mqtt-unavailable`.
 - [x] Finaliser les notes de release apres merges. Version : `1.2.2`, branche : `docs/v1.2.2-finalize-release-notes`.
+- [x] Ajouter un mode Codex local par fichier JSON sans MQTT. Version : `1.3.0`, branche : `feature/v1.3.0-codex-local-file`.
 
 ## Bugs connus
 - [ ] Aucun bug runtime confirme pour l'instant ; tests Home Assistant complets encore a ajouter.
 
 ## Ameliorations possibles
+- [ ] Ajouter un petit script compagnon officiel pour ecrire `/config/chatgpt_usage_codex.json`.
+  - Contexte : simplifier encore l'usage Codex sans MQTT.
+  - Priorite : haute.
+  - Detecte pendant : `feature/v1.3.0-codex-local-file`.
 - [ ] Ajouter des tests d'entites MQTT avec Home Assistant et un broker simule.
   - Contexte : le parsing est teste, mais l'abonnement Home Assistant complet depend de l'environnement HA.
   - Priorite : haute.

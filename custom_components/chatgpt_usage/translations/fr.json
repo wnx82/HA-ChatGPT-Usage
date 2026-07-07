@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "ChatGPT Usage",
-        "description": "Configure l'usage officiel OpenAI API et l'usage experimental Codex via MQTT.",
+        "description": "Configure l'usage officiel OpenAI API et l'usage experimental Codex via MQTT ou fichier local.",
         "data": {
           "mode": "Mode",
           "api_key": "Cle API admin OpenAI",
@@ -12,12 +12,15 @@
           "currency": "Devise",
           "scan_interval": "Intervalle de scan en secondes",
           "enable_codex": "Activer les capteurs Codex experimentaux",
+          "codex_source": "Source Codex",
+          "codex_file_path": "Chemin du fichier JSON Codex local",
           "mqtt_prefix": "Prefixe MQTT Codex"
         }
       }
     },
     "error": {
-      "api_key_required": "Une cle API admin OpenAI est requise pour le mode OpenAI API Usage."
+      "api_key_required": "Une cle API admin OpenAI est requise pour le mode OpenAI API Usage.",
+      "codex_file_path_required": "Un chemin de fichier JSON Codex local est requis pour le mode fichier."
     }
   }
 }

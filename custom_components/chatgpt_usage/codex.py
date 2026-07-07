@@ -52,3 +52,14 @@ def parse_codex_timestamp(value: Any) -> datetime | Any:
     if parsed.tzinfo is None:
         return parsed.replace(tzinfo=UTC)
     return parsed
+
+
+def normalize_codex_snapshot(payload: dict[str, Any]) -> dict[str, Any]:
+    """Normalize a local Codex snapshot for Home Assistant sensors."""
+    snapshot: dict[str, Any] = {}
+    for key, value in payload.items():
+        if key in {"5h_reset", "weekly_reset", "last_update"}:
+            snapshot[key] = parse_codex_timestamp(value)
+        else:
+            snapshot[key] = value
+    return snapshot

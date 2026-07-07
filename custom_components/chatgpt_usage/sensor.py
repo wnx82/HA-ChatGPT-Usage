@@ -16,12 +16,17 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .codex import parse_codex_payload, parse_codex_timestamp
 from .const import (
+    CODEX_SOURCE_FILE,
+    CONF_CODEX_SOURCE,
     CONF_ENABLE_CODEX,
     CONF_MODE,
     CONF_MQTT_PREFIX,
+    DEFAULT_CODEX_SOURCE,
     DEFAULT_MQTT_PREFIX,
     DEFAULT_CURRENCY,
     DOMAIN,
+    MODE_BOTH,
+    MODE_CODEX_FILE,
     MODE_CODEX_MQTT,
 )
 
@@ -84,8 +89,18 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
 
     mode = entry.data.get(CONF_MODE)
     enable_codex = entry.options.get(CONF_ENABLE_CODEX, entry.data.get(CONF_ENABLE_CODEX, False))
-    if mode == MODE_CODEX_MQTT or enable_codex:
-        entities.extend(ChatGPTCodexMqttSensor(entry, description) for description in CODEX_SENSORS)
+    codex_source = entry.options.get(CONF_CODEX_SOURCE, entry.data.get(CONF_CODEX_SOURCE, DEFAULT_CODEX_SOURCE))
+    if mode == MODE_CODEX_MQTT:
+        codex_source = "mqtt"
+    elif mode == MODE_CODEX_FILE:
+        codex_source = CODEX_SOURCE_FILE
+    if mode in (MODE_CODEX_MQTT, MODE_CODEX_FILE, MODE_BOTH) or enable_codex:
+        if codex_source == CODEX_SOURCE_FILE:
+            codex_coordinator = data["coordinators"].get("codex")
+            if codex_coordinator is not None:
+                entities.extend(ChatGPTCodexFileSensor(codex_coordinator, entry, description) for description in CODEX_SENSORS)
+        else:
+            entities.extend(ChatGPTCodexMqttSensor(entry, description) for description in CODEX_SENSORS)
 
     async_add_entities(entities)
 
@@ -190,3 +205,40 @@ class ChatGPTCodexMqttSensor(SensorEntity):
         self._attr_available = True
         self._status = "connected"
         self.async_write_ha_state()
+
+
+class ChatGPTCodexFileSensor(CoordinatorEntity, SensorEntity):
+    """Experimental Codex sensor backed by a local JSON file."""
+
+    entity_description: ChatGPTUsageSensorDescription
+    _attr_has_entity_name = True
+
+    def __init__(self, coordinator: Any, entry: ConfigEntry, description: ChatGPTUsageSensorDescription) -> None:
+        super().__init__(coordinator)
+        self.entity_description = description
+        self._attr_unique_id = f"{entry.entry_id}_{description.key}"
+        self._attr_device_info = {
+            "identifiers": {(DOMAIN, entry.entry_id)},
+            "name": "ChatGPT Codex Usage",
+            "manufacturer": "OpenAI",
+        }
+
+    @property
+    def available(self) -> bool:
+        """Return availability based on coordinator data."""
+        return super().available and self.entity_description.value_key in self.coordinator.data
+
+    @property
+    def native_value(self) -> Any:
+        """Return the local-file value."""
+        return self.coordinator.data.get(self.entity_description.value_key)
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return local-file source metadata."""
+        return {
+            "source": self.coordinator.data.get("source", "codex_local_file"),
+            "experimental": True,
+            "path": self.coordinator.data.get("path"),
+            "status": self.coordinator.data.get("status", "waiting_for_file"),
+        }

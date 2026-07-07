@@ -1,5 +1,28 @@
 # PROJECT_LOG
 
+## 2026-07-07 15:05 Europe/Brussels - v1.3.0
+
+### Objectif
+
+- Ajouter une source Codex locale sans MQTT via un fichier JSON pollé par Home Assistant.
+
+### Criteres d'acceptation
+
+- Un utilisateur peut configurer Codex sans broker MQTT.
+- Les capteurs Codex lisent un fichier JSON local selon `scan_interval`.
+- Le mode MQTT existant reste fonctionnel.
+
+### Decisions techniques
+
+- Ajout d'une source Codex `file` configurable dans le config flow.
+- Lecture du fichier via un `DataUpdateCoordinator` dedie pour rester coherente avec le reste de l'integration.
+- Pas d'authentification web automatisee dans Home Assistant ; le fichier local reste une frontiere claire et maintenable.
+
+### Rollback
+
+- Branche : `feature/v1.3.0-codex-local-file`
+- Commande apres merge : `git revert <commit>`
+
 ## 2026-07-07 14:40 Europe/Brussels - v1.1.0
 
 ### Audit initial
