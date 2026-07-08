@@ -16,6 +16,21 @@ Exemples valides : `1.1.0`, `1.2.0`, `1.2.1`, `1.9.12`, `1.10.0`, `1.14.27`.
 
 Quand la version change, mettre a jour tous les fichiers qui portent la version projet : `package.json` si present, `README.md` si une version y est indiquee, `CHANGELOG.md`, `pyproject.toml`, `custom_components/chatgpt_usage/manifest.json`, `custom_components/chatgpt_usage/const.py`, `package-lock.json` si present, et tout autre fichier de configuration contenant une version projet.
 
+## [1.5.4] - 2026-07-08 Europe/Brussels
+
+### Changements
+- Ajout des brand assets locaux pour HACS/Home Assistant dans `custom_components/chatgpt_usage/brand/`.
+- Ajout de `icon.png` en 512x512.
+- Ajout de `logo.png` en 1024x256.
+- Ajout d'un test de presence et dimensions des assets PNG.
+- Mise a jour de la documentation.
+
+### Tests
+- `python3 -m pytest` : OK, 9 tests passes.
+- `python3 -m compileall custom_components tests` : OK.
+- `npm test` : OK, 7 tests passes.
+- Validation JSON de `hacs.json`, `manifest.json`, `package.json` et `package-lock.json` : OK.
+
 ## [1.5.3] - 2026-07-08 Europe/Brussels
 
 ### Changements
