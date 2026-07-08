@@ -1,6 +1,6 @@
 # ChatGPT Usage
 
-Version actuelle : `1.5.1`
+Version actuelle : `1.5.2`
 
 ChatGPT Usage est une integration Home Assistant custom compatible HACS pour afficher l'abonnement et l'usage Codex/ChatGPT recuperes depuis une connexion web locale, ainsi que l'usage OpenAI API officiel si tu choisis aussi de renseigner une cle admin API.
 
@@ -37,9 +37,8 @@ Le projet suit le format `x.y.z` decrit dans `CHANGELOG.md` : seul l'utilisateur
 Le mode par defaut est `codex_file`. Il ne demande pas de cle API OpenAI.
 
 1. Dans Home Assistant, ajoute l'integration `ChatGPT Usage`.
-2. Laisse `Mode` sur `codex_file`.
-3. Garde le chemin JSON par defaut ou choisis un chemin accessible a Home Assistant, par exemple `/config/chatgpt_usage_codex.json`.
-4. Sur la machine qui peut ouvrir un navigateur, lance le companion :
+2. Le premier ecran te demande de lier ChatGPT/Codex : ouvre le lien affiche et connecte-toi.
+3. Sur la machine qui peut ouvrir un navigateur, lance le companion :
 
 ```bash
 npm install
@@ -54,6 +53,9 @@ Pour garder les capteurs a jour :
 ```bash
 npm run codex:companion -- --out /config/chatgpt_usage_codex.json --watch-seconds 300
 ```
+
+4. Coche la confirmation dans Home Assistant, puis laisse `Mode` sur `codex_file`.
+5. Garde le chemin JSON par defaut ou choisis le chemin utilise avec `--out`.
 
 Le profil navigateur persistant est stocke dans `.codex-web-companion/profile` pour eviter de te reconnecter a chaque lancement. Ce dossier est ignore par Git.
 

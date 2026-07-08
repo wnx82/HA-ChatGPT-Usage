@@ -14,6 +14,7 @@ from .const import (
     CONF_CODEX_REMAINING_ALERT,
     CONF_CODEX_FILE_PATH,
     CONF_CODEX_SOURCE,
+    CONF_CHATGPT_ACCOUNT_LINKED,
     CONF_DAILY_COST_ALERT,
     CONF_ENABLE_CODEX,
     CONF_MODE,
@@ -29,11 +30,20 @@ from .const import (
     DEFAULT_SCAN_INTERVAL,
     CODEX_SOURCE_FILE,
     CODEX_SOURCES,
+    CHATGPT_CODEX_USAGE_URL,
     DOMAIN,
     MODE_BOTH,
     MODE_CODEX_FILE,
     MODES,
 )
+
+
+def _link_schema() -> vol.Schema:
+    return vol.Schema(
+        {
+            vol.Required(CONF_CHATGPT_ACCOUNT_LINKED, default=False): bool,
+        }
+    )
 
 
 def _config_schema(defaults: dict[str, Any] | None = None) -> vol.Schema:
@@ -77,7 +87,23 @@ class ChatGPTUsageConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
 
     async def async_step_user(self, user_input: dict[str, Any] | None = None) -> config_entries.FlowResult:
-        """Handle the initial step."""
+        """Start with ChatGPT account linking instructions."""
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            if not user_input.get(CONF_CHATGPT_ACCOUNT_LINKED):
+                errors[CONF_CHATGPT_ACCOUNT_LINKED] = "chatgpt_link_required"
+            if not errors:
+                return await self.async_step_settings()
+
+        return self.async_show_form(
+            step_id="user",
+            data_schema=_link_schema(),
+            errors=errors,
+            description_placeholders={"chatgpt_url": CHATGPT_CODEX_USAGE_URL},
+        )
+
+    async def async_step_settings(self, user_input: dict[str, Any] | None = None) -> config_entries.FlowResult:
+        """Handle integration settings after ChatGPT account linking."""
         errors: dict[str, str] = {}
         if user_input is not None:
             mode = user_input[CONF_MODE]
@@ -92,7 +118,7 @@ class ChatGPTUsageConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 self._abort_if_unique_id_configured()
                 return self.async_create_entry(title="ChatGPT Usage", data=user_input)
 
-        return self.async_show_form(step_id="user", data_schema=_config_schema(user_input), errors=errors)
+        return self.async_show_form(step_id="settings", data_schema=_config_schema(user_input), errors=errors)
 
     @staticmethod
     @callback

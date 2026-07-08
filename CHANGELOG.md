@@ -16,6 +16,23 @@ Exemples valides : `1.1.0`, `1.2.0`, `1.2.1`, `1.9.12`, `1.10.0`, `1.14.27`.
 
 Quand la version change, mettre a jour tous les fichiers qui portent la version projet : `package.json` si present, `README.md` si une version y est indiquee, `CHANGELOG.md`, `pyproject.toml`, `custom_components/chatgpt_usage/manifest.json`, `custom_components/chatgpt_usage/const.py`, `package-lock.json` si present, et tout autre fichier de configuration contenant une version projet.
 
+## [1.5.2] - 2026-07-08 Europe/Brussels
+
+### Changements
+- Ajout d'une premiere etape de config flow pour lier ChatGPT/Codex avant les reglages.
+- Ajout d'un lien vers la page ChatGPT/Codex Usage Dashboard dans l'assistant Home Assistant.
+- Ajout d'une confirmation utilisateur avant de continuer vers la configuration `codex_file`.
+- Mise a jour des traductions et de la documentation d'installation.
+
+### Limite
+- Home Assistant ne peut pas ouvrir automatiquement un navigateur Chromium local ni recuperer les cookies ChatGPT depuis l'integration. La liaison reste une etape guidee : l'utilisateur ouvre la page ChatGPT/Codex et lance le companion web local.
+
+### Tests
+- `python3 -m pytest` : OK, 8 tests passes.
+- `python3 -m compileall custom_components tests` : OK.
+- `npm test` : OK, 7 tests passes.
+- Validation JSON des fichiers `strings.json`, traductions, `manifest.json`, `package.json` et `package-lock.json` : OK.
+
 ## [1.5.1] - 2026-07-08 Europe/Brussels
 
 ### Changements
