@@ -28,13 +28,10 @@ from .const import (
     DEFAULT_DAILY_COST_ALERT,
     DEFAULT_MQTT_PREFIX,
     DEFAULT_SCAN_INTERVAL,
-    CODEX_SOURCE_FILE,
     CODEX_SOURCES,
     CHATGPT_CODEX_USAGE_URL,
     DOMAIN,
-    MODE_BOTH,
     MODE_CODEX_FILE,
-    MODES,
 )
 
 
@@ -46,22 +43,20 @@ def _link_schema() -> vol.Schema:
     )
 
 
-def _config_schema(defaults: dict[str, Any] | None = None) -> vol.Schema:
-    defaults = defaults or {}
-    return vol.Schema(
-        {
-            vol.Required(CONF_MODE, default=defaults.get(CONF_MODE, MODE_CODEX_FILE)): vol.In(MODES),
-            vol.Optional(CONF_API_KEY, default=defaults.get(CONF_API_KEY, "")): str,
-            vol.Optional(CONF_ORG_ID, default=defaults.get(CONF_ORG_ID, "")): str,
-            vol.Optional(CONF_PROJECT_ID, default=defaults.get(CONF_PROJECT_ID, "")): str,
-            vol.Optional(CONF_CURRENCY, default=defaults.get(CONF_CURRENCY, DEFAULT_CURRENCY)): str,
-            vol.Optional(CONF_SCAN_INTERVAL, default=defaults.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)): vol.All(vol.Coerce(int), vol.Range(min=300)),
-            vol.Optional(CONF_ENABLE_CODEX, default=defaults.get(CONF_ENABLE_CODEX, False)): bool,
-            vol.Optional(CONF_CODEX_SOURCE, default=defaults.get(CONF_CODEX_SOURCE, DEFAULT_CODEX_SOURCE)): vol.In(CODEX_SOURCES),
-            vol.Optional(CONF_CODEX_FILE_PATH, default=defaults.get(CONF_CODEX_FILE_PATH, DEFAULT_CODEX_FILE_PATH)): str,
-            vol.Optional(CONF_MQTT_PREFIX, default=defaults.get(CONF_MQTT_PREFIX, DEFAULT_MQTT_PREFIX)): str,
-        }
-    )
+def _default_config_data() -> dict[str, Any]:
+    """Return the automatic setup defaults used by the first-run flow."""
+    return {
+        CONF_MODE: MODE_CODEX_FILE,
+        CONF_API_KEY: "",
+        CONF_ORG_ID: "",
+        CONF_PROJECT_ID: "",
+        CONF_CURRENCY: DEFAULT_CURRENCY,
+        CONF_SCAN_INTERVAL: DEFAULT_SCAN_INTERVAL,
+        CONF_ENABLE_CODEX: True,
+        CONF_CODEX_SOURCE: DEFAULT_CODEX_SOURCE,
+        CONF_CODEX_FILE_PATH: DEFAULT_CODEX_FILE_PATH,
+        CONF_MQTT_PREFIX: DEFAULT_MQTT_PREFIX,
+    }
 
 
 def _options_schema(defaults: dict[str, Any]) -> vol.Schema:
@@ -93,7 +88,9 @@ class ChatGPTUsageConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             if not user_input.get(CONF_CHATGPT_ACCOUNT_LINKED):
                 errors[CONF_CHATGPT_ACCOUNT_LINKED] = "chatgpt_link_required"
             if not errors:
-                return await self.async_step_settings()
+                await self.async_set_unique_id(DOMAIN)
+                self._abort_if_unique_id_configured()
+                return self.async_create_entry(title="ChatGPT Usage", data=_default_config_data())
 
         return self.async_show_form(
             step_id="user",
@@ -101,24 +98,6 @@ class ChatGPTUsageConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             errors=errors,
             description_placeholders={"chatgpt_url": CHATGPT_CODEX_USAGE_URL},
         )
-
-    async def async_step_settings(self, user_input: dict[str, Any] | None = None) -> config_entries.FlowResult:
-        """Handle integration settings after ChatGPT account linking."""
-        errors: dict[str, str] = {}
-        if user_input is not None:
-            mode = user_input[CONF_MODE]
-            if mode in ("openai", "both") and not user_input.get(CONF_API_KEY):
-                errors[CONF_API_KEY] = "api_key_required"
-            if mode == MODE_CODEX_FILE and not user_input.get(CONF_CODEX_FILE_PATH):
-                errors[CONF_CODEX_FILE_PATH] = "codex_file_path_required"
-            if mode == MODE_BOTH and user_input.get(CONF_CODEX_SOURCE) == CODEX_SOURCE_FILE and not user_input.get(CONF_CODEX_FILE_PATH):
-                errors[CONF_CODEX_FILE_PATH] = "codex_file_path_required"
-            if not errors:
-                await self.async_set_unique_id(DOMAIN)
-                self._abort_if_unique_id_configured()
-                return self.async_create_entry(title="ChatGPT Usage", data=user_input)
-
-        return self.async_show_form(step_id="settings", data_schema=_config_schema(user_input), errors=errors)
 
     @staticmethod
     @callback

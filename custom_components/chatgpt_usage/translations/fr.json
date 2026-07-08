@@ -3,35 +3,9 @@
     "step": {
       "user": {
         "title": "Lier le compte ChatGPT",
-        "description": "Ouvre cette page pour te connecter a ChatGPT/Codex, puis lance le companion web local pour qu'il ecrive le fichier JSON lu par Home Assistant : {chatgpt_url}\n\nCommande :\n`npm run codex:companion -- --out /config/chatgpt_usage_codex.json --watch-seconds 300`\n\nCoche la case quand la page ChatGPT/Codex est ouverte ou quand le companion tourne.",
+        "description": "Ouvre cette page pour te connecter a ChatGPT/Codex, puis lance le companion web local pour qu'il ecrive le fichier JSON lu par Home Assistant : {chatgpt_url}\n\nCommande :\n`npm run codex:companion -- --out /config/chatgpt_usage_codex.json --watch-seconds 300`\n\nApres confirmation, Home Assistant cree l'integration automatiquement avec les reglages recommandes en mode fichier Codex. Aucune cle API ni champ manuel n'est requis.",
         "data": {
-          "chatgpt_account_linked": "J'ai ouvert ChatGPT/Codex ou demarre le companion",
-          "mode": "Mode",
-          "api_key": "Cle API admin OpenAI (mode API seulement)",
-          "org_id": "ID organisation",
-          "project_id": "ID projet",
-          "currency": "Devise",
-          "scan_interval": "Intervalle de scan en secondes",
-          "enable_codex": "Activer les capteurs Codex experimentaux",
-          "codex_source": "Source Codex",
-          "codex_file_path": "Chemin du fichier JSON Codex local",
-          "mqtt_prefix": "Prefixe MQTT Codex"
-        }
-      },
-      "settings": {
-        "title": "Reglages ChatGPT Usage",
-        "description": "Le mode par defaut lit le fichier JSON local genere par le companion web. Le mode OpenAI API est optionnel et demande une cle admin.",
-        "data": {
-          "mode": "Mode",
-          "api_key": "Cle API admin OpenAI (mode API seulement)",
-          "org_id": "ID organisation",
-          "project_id": "ID projet",
-          "currency": "Devise",
-          "scan_interval": "Intervalle de scan en secondes",
-          "enable_codex": "Activer les capteurs Codex experimentaux",
-          "codex_source": "Source Codex",
-          "codex_file_path": "Chemin du fichier JSON Codex local",
-          "mqtt_prefix": "Prefixe MQTT Codex"
+          "chatgpt_account_linked": "Creer automatiquement avec les reglages recommandes"
         }
       }
     },
