@@ -5,9 +5,11 @@
 - Ne jamais logger la cle API OpenAI.
 - Ne jamais demander ni stocker de mot de passe ChatGPT.
 - Ne jamais stocker de cookie ou session token ChatGPT non chiffre.
-- Utiliser le mecanisme Home Assistant config entry pour la cle API.
+- Utiliser le mode `codex_file` par defaut pour eviter toute cle API quand seul l'abonnement/usage ChatGPT Codex est souhaite.
+- Utiliser le mecanisme Home Assistant config entry pour la cle API uniquement en mode OpenAI API.
 - Masquer les secrets dans `diagnostics.py`.
 - Le companion web local doit utiliser un profil navigateur local ignore par Git, jamais un export manuel de cookies ou tokens.
+- Considerer `.codex-web-companion/profile` comme une session navigateur locale sensible : ne pas la committer, ne pas la partager, ne pas la sauvegarder dans un emplacement public.
 
 ## Fichiers `.env`
 
@@ -17,6 +19,8 @@
 - Ne jamais copier de secret dans `README.md`, `CHANGELOG.md`, `PROJECT_LOG.md`, `TODO.md` ou `DEPLOYMENT.md`.
 
 ## Rotation des cles
+
+Cette section concerne seulement le mode OpenAI API.
 
 1. Creer une nouvelle cle OpenAI admin.
 2. Mettre a jour la config entry Home Assistant.

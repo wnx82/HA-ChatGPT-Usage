@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## [1.5.0] - 2026-07-08 Europe/Brussels
+
+### Changements
+- Passage du mode initial par defaut a `codex_file` pour permettre une installation sans cle API.
+- Clarification de la separation entre abonnement ChatGPT/Codex via companion web et usage OpenAI API via cle admin optionnelle.
+- Renforcement du parser du companion web pour detecter les libelles d'abonnement `subscription`, `abonnement`, `forfait` et `ChatGPT Plus/Pro/Go/etc.`.
+- Ajout de la prise en charge de libelles francais courants pour l'usage, les credits, les resets et le statut de limite.
+- Ajout de `missing_fields` et du statut `partial` pour diagnostiquer les captures incompletes.
+- Correction de la conservation des valeurs `0%` dans les progress bars.
+- Correction du fallback de reset pour eviter de melanger les fenetres 5h et hebdo.
+- Mise a jour des documents README, API, securite, deploiement et TODO.
+
+### Tests
+- `python3 -m pytest` : OK, 8 tests passes.
+- `python3 -m compileall custom_components tests` : OK.
+- `npm test` : OK, 7 tests passes.
+
 ## [1.4.0] - 2026-07-07 16:45 Europe/Brussels
 
 ### Branche

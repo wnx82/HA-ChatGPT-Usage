@@ -3,10 +3,10 @@
     "step": {
       "user": {
         "title": "ChatGPT Usage",
-        "description": "Configure official OpenAI API usage and optional experimental Codex usage via MQTT or local file.",
+        "description": "Recommended: use Codex local file mode with the web companion to sign in to ChatGPT in a browser. OpenAI API mode is optional and requires an admin API key.",
         "data": {
           "mode": "Mode",
-          "api_key": "OpenAI Admin API key",
+          "api_key": "OpenAI Admin API key (API mode only)",
           "org_id": "Organization ID",
           "project_id": "Project ID",
           "currency": "Currency",

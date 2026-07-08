@@ -40,13 +40,13 @@ def _config_schema(defaults: dict[str, Any] | None = None) -> vol.Schema:
     defaults = defaults or {}
     return vol.Schema(
         {
-            vol.Required(CONF_MODE, default=defaults.get(CONF_MODE, MODE_BOTH)): vol.In(MODES),
+            vol.Required(CONF_MODE, default=defaults.get(CONF_MODE, MODE_CODEX_FILE)): vol.In(MODES),
             vol.Optional(CONF_API_KEY, default=defaults.get(CONF_API_KEY, "")): str,
             vol.Optional(CONF_ORG_ID, default=defaults.get(CONF_ORG_ID, "")): str,
             vol.Optional(CONF_PROJECT_ID, default=defaults.get(CONF_PROJECT_ID, "")): str,
             vol.Optional(CONF_CURRENCY, default=defaults.get(CONF_CURRENCY, DEFAULT_CURRENCY)): str,
             vol.Optional(CONF_SCAN_INTERVAL, default=defaults.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)): vol.All(vol.Coerce(int), vol.Range(min=300)),
-            vol.Optional(CONF_ENABLE_CODEX, default=defaults.get(CONF_ENABLE_CODEX, True)): bool,
+            vol.Optional(CONF_ENABLE_CODEX, default=defaults.get(CONF_ENABLE_CODEX, False)): bool,
             vol.Optional(CONF_CODEX_SOURCE, default=defaults.get(CONF_CODEX_SOURCE, DEFAULT_CODEX_SOURCE)): vol.In(CODEX_SOURCES),
             vol.Optional(CONF_CODEX_FILE_PATH, default=defaults.get(CONF_CODEX_FILE_PATH, DEFAULT_CODEX_FILE_PATH)): str,
             vol.Optional(CONF_MQTT_PREFIX, default=defaults.get(CONF_MQTT_PREFIX, DEFAULT_MQTT_PREFIX)): str,
@@ -61,7 +61,7 @@ def _options_schema(defaults: dict[str, Any]) -> vol.Schema:
             vol.Optional(CONF_PROJECT_ID, default=defaults.get(CONF_PROJECT_ID, "")): str,
             vol.Optional(CONF_CURRENCY, default=defaults.get(CONF_CURRENCY, DEFAULT_CURRENCY)): str,
             vol.Optional(CONF_SCAN_INTERVAL, default=defaults.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)): vol.All(vol.Coerce(int), vol.Range(min=300)),
-            vol.Optional(CONF_ENABLE_CODEX, default=defaults.get(CONF_ENABLE_CODEX, True)): bool,
+            vol.Optional(CONF_ENABLE_CODEX, default=defaults.get(CONF_ENABLE_CODEX, False)): bool,
             vol.Optional(CONF_CODEX_SOURCE, default=defaults.get(CONF_CODEX_SOURCE, DEFAULT_CODEX_SOURCE)): vol.In(CODEX_SOURCES),
             vol.Optional(CONF_CODEX_FILE_PATH, default=defaults.get(CONF_CODEX_FILE_PATH, DEFAULT_CODEX_FILE_PATH)): str,
             vol.Optional(CONF_MQTT_PREFIX, default=defaults.get(CONF_MQTT_PREFIX, DEFAULT_MQTT_PREFIX)): str,

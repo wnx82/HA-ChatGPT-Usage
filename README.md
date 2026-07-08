@@ -1,8 +1,8 @@
 # ChatGPT Usage
 
-Version actuelle : `1.4.0`
+Version actuelle : `1.5.0`
 
-ChatGPT Usage est une integration Home Assistant custom compatible HACS pour afficher l'usage OpenAI API officiel et des informations Codex experimentales via MQTT ou un fichier JSON local.
+ChatGPT Usage est une integration Home Assistant custom compatible HACS pour afficher l'abonnement et l'usage Codex/ChatGPT recuperes depuis une connexion web locale, ainsi que l'usage OpenAI API officiel si tu choisis aussi de renseigner une cle admin API.
 
 ## Stack technique
 
@@ -15,11 +15,11 @@ ChatGPT Usage est une integration Home Assistant custom compatible HACS pour aff
 
 ## Fonctionnalites
 
-- Cout OpenAI API du jour, d'hier, du mois courant et des 7 derniers jours.
-- Requetes et tokens input/output du jour si disponibles via les endpoints OpenAI.
-- Statut de connectivite API.
-- Capteurs Codex experimentaux alimentes par MQTT ou un fichier JSON local.
-- Companion web local pour ouvrir ChatGPT, te laisser te connecter manuellement, puis ecrire le JSON Codex pour Home Assistant.
+- Mode recommande sans cle API : capteurs Codex/ChatGPT alimentes par un fichier JSON local.
+- Companion web local qui ouvre ChatGPT, te laisse te connecter manuellement, puis ecrit le JSON lu par Home Assistant.
+- Recuperation best-effort de l'abonnement ChatGPT/Codex (`plan`), des credits, du statut de limite et des limites 5h/hebdo quand la page les affiche.
+- Mode optionnel OpenAI API officiel : couts du jour, d'hier, du mois courant, des 7 derniers jours, requetes et tokens.
+- Statut de connectivite API uniquement si le mode OpenAI API est active.
 - Diagnostics Home Assistant avec masquage des secrets.
 
 ## Installation
@@ -28,11 +28,37 @@ ChatGPT Usage est une integration Home Assistant custom compatible HACS pour aff
 2. Redemarrer Home Assistant.
 3. Ajouter l'integration depuis l'interface : Parametres > Appareils et services > Ajouter une integration > ChatGPT Usage.
 
-## Configuration
+## Configuration recommandee sans cle API
+
+Le mode par defaut est `codex_file`. Il ne demande pas de cle API OpenAI.
+
+1. Dans Home Assistant, ajoute l'integration `ChatGPT Usage`.
+2. Laisse `Mode` sur `codex_file`.
+3. Garde le chemin JSON par defaut ou choisis un chemin accessible a Home Assistant, par exemple `/config/chatgpt_usage_codex.json`.
+4. Sur la machine qui peut ouvrir un navigateur, lance le companion :
+
+```bash
+npm install
+npx playwright install chromium
+npm run codex:companion -- --out /config/chatgpt_usage_codex.json
+```
+
+Le navigateur Chromium s'ouvre sur ChatGPT/Codex. Connecte-toi normalement, ouvre la page d'usage Codex si necessaire, puis appuie sur Entree dans le terminal. Le fichier JSON est ecrit pour Home Assistant.
+
+Pour garder les capteurs a jour :
+
+```bash
+npm run codex:companion -- --out /config/chatgpt_usage_codex.json --watch-seconds 300
+```
+
+Le profil navigateur persistant est stocke dans `.codex-web-companion/profile` pour eviter de te reconnecter a chaque lancement. Ce dossier est ignore par Git.
+
+## Mode OpenAI API optionnel
 
 Parametres principaux :
 
-- `OpenAI Admin API key` : cle API admin OpenAI pour les endpoints organisationnels.
+- `Mode` : `codex_file` par defaut, `codex_mqtt`, `openai` ou `both`.
+- `OpenAI Admin API key` : cle API admin OpenAI pour les endpoints organisationnels, requise seulement pour `openai` ou `both`.
 - `Organization ID` : optionnel.
 - `Project ID` : optionnel.
 - `Currency` : `USD` par defaut.
@@ -41,7 +67,7 @@ Parametres principaux :
 - `Codex local JSON file path` : `/config/chatgpt_usage_codex.json` par defaut.
 - `Codex MQTT prefix` : `codex/usage` par defaut si tu choisis MQTT.
 
-Le mode Codex est experimental. Il ne demande jamais de mot de passe ChatGPT et ne stocke aucun cookie ou token de session ChatGPT.
+Le mode Codex est experimental. Il ne demande jamais de mot de passe ChatGPT a Home Assistant et ne stocke aucun cookie ou token de session ChatGPT dans l'integration. Le companion conserve seulement un profil navigateur local ignore par Git.
 
 ## Mode Codex sans MQTT
 
@@ -70,6 +96,14 @@ Home Assistant relit ce fichier selon `scan_interval`.
 
 Le companion web ouvre un vrai navigateur Chromium, te laisse te connecter toi-meme a ChatGPT, puis capture la page `Codex Settings > Usage Dashboard` pour ecrire le fichier JSON local.
 
+Il essaie d'extraire :
+
+- `plan` : abonnement visible (`free`, `go`, `plus`, `pro`, `team`, `business`, `enterprise`, `edu`).
+- `credits` : credits ou solde visible.
+- `limit_status` : `available`, `near_limit`, `limit_reached` ou `unknown`.
+- `5h_*` et `weekly_*` : valeurs et resets visibles sur la page.
+- `extraction_status` et `missing_fields` : aide au diagnostic si la page ne contient qu'une partie des informations.
+
 Installation du companion :
 
 ```bash
@@ -89,7 +123,7 @@ Mode surveillance continue :
 npm run codex:companion -- --out /config/chatgpt_usage_codex.json --watch-seconds 300
 ```
 
-Le profil navigateur persistant est stocke dans `.codex-web-companion/profile` pour eviter de te reconnecter a chaque fois. Ce dossier est ignore par Git.
+Important : il n'existe pas d'API publique officielle documentee pour lire l'abonnement ChatGPT personnel depuis Home Assistant. La recuperation de l'abonnement repose donc sur ce que la page web ChatGPT affiche au moment de la capture. Le parser reconnait des libelles anglais et francais courants, mais reste best-effort.
 
 ## Topics MQTT Codex
 
@@ -116,7 +150,7 @@ Chaque payload peut etre une valeur brute (`42`, `18.5`, `plus`) ou un objet JSO
 
 ## Variables d'environnement
 
-Voir `.env.example`. Les secrets reels ne sont pas requis dans le depot pour Home Assistant, car la cle API est stockee dans la config entry Home Assistant.
+Voir `.env.example`. Les secrets reels ne sont pas requis dans le depot. En mode OpenAI API optionnel, la cle API est stockee dans la config entry Home Assistant.
 
 ## Entites
 
@@ -246,4 +280,4 @@ npm test
 
 ## Notes developpement
 
-Les endpoints utilises sont les endpoints officiels d'organisation OpenAI pour les couts et l'usage completions. Le mode Codex est separe car il n'existe pas d'API publique officielle documentee pour l'usage ChatGPT/Codex personnel. Le companion web local repose sur une capture best-effort de la page web ChatGPT, donc il peut necessiter des ajustements si l'interface evolue.
+Les endpoints utilises en mode OpenAI API sont les endpoints officiels d'organisation OpenAI pour les couts et l'usage completions. Le mode Codex/ChatGPT est separe car l'abonnement ChatGPT et l'usage Codex personnel sont affiches dans ChatGPT web, pas exposes ici via une API publique officielle documentee. Le companion web local repose sur une capture best-effort de la page web ChatGPT, donc il peut necessiter des ajustements si l'interface evolue.

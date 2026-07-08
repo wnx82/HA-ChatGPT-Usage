@@ -1,5 +1,29 @@
 # PROJECT_LOG
 
+## 2026-07-08 Europe/Brussels - v1.5.0
+
+### Objectif
+
+- Faire du flux sans cle API le chemin par defaut : Home Assistant lit un fichier Codex local alimente par une connexion web ChatGPT/Codex.
+- Recuperer aussi l'abonnement visible sur la page ChatGPT/Codex quand l'interface l'affiche.
+
+### Criteres d'acceptation
+
+- La config initiale ne demande plus de cle API par defaut.
+- Le companion extrait mieux les formulations d'abonnement.
+- Les valeurs limites a `0%` restent valides.
+- La documentation explique clairement la difference entre abonnement ChatGPT/Codex et usage OpenAI API.
+
+### Decisions techniques
+
+- Le mode `codex_file` devient la valeur par defaut du config flow.
+- Pas d'automatisation de mot de passe ou d'export de cookies : l'utilisateur se connecte dans Chromium, puis le companion lit le texte visible.
+- Le mode OpenAI API reste disponible, mais seulement comme option necessitant une cle admin API.
+
+### Rollback
+
+- Commande apres merge : `git revert <commit>`
+
 ## 2026-07-07 16:45 Europe/Brussels - v1.4.0
 
 ### Objectif
