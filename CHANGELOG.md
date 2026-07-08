@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## Regle de versioning
+
+Le projet utilise toujours une version au format `x.y.z`.
+
+- `x` = version majeure decidee uniquement par l'utilisateur.
+- `y` = nouvelle branche ou nouvelle grande etape.
+- `z` = modification, correction ou ajustement dans l'etape.
+- `y` peut depasser `10`.
+- `z` peut depasser `10`.
+- Ne jamais transformer automatiquement `1.9.12` en `2.0.0`.
+- Seul l'utilisateur peut decider de passer de `1.x.x` a `2.0.0`.
+
+Exemples valides : `1.1.0`, `1.2.0`, `1.2.1`, `1.9.12`, `1.10.0`, `1.14.27`.
+
+Quand la version change, mettre a jour tous les fichiers qui portent la version projet : `package.json` si present, `README.md` si une version y est indiquee, `CHANGELOG.md`, `pyproject.toml`, `custom_components/chatgpt_usage/manifest.json`, `custom_components/chatgpt_usage/const.py`, `package-lock.json` si present, et tout autre fichier de configuration contenant une version projet.
+
+## [1.5.1] - 2026-07-08 Europe/Brussels
+
+### Changements
+- Ajout de la regle de versioning projet dans le changelog.
+- Rappel que seul l'utilisateur peut decider d'une version majeure.
+- Alignement des fichiers de version projet en `1.5.1`.
+
+### Tests
+- Changement documentaire et metadata uniquement.
+
 ## [1.5.0] - 2026-07-08 Europe/Brussels
 
 ### Changements

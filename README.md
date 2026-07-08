@@ -1,6 +1,6 @@
 # ChatGPT Usage
 
-Version actuelle : `1.5.0`
+Version actuelle : `1.5.1`
 
 ChatGPT Usage est une integration Home Assistant custom compatible HACS pour afficher l'abonnement et l'usage Codex/ChatGPT recuperes depuis une connexion web locale, ainsi que l'usage OpenAI API officiel si tu choisis aussi de renseigner une cle admin API.
 
@@ -12,6 +12,10 @@ ChatGPT Usage est une integration Home Assistant custom compatible HACS pour aff
 - `ConfigFlow` et `OptionsFlow`
 - `aiohttp` via Home Assistant
 - HACS
+
+## Versioning
+
+Le projet suit le format `x.y.z` decrit dans `CHANGELOG.md` : seul l'utilisateur decide un changement de version majeure `x`, `y` represente une nouvelle branche ou grande etape, et `z` une correction ou un ajustement dans l'etape. Les versions comme `1.10.0` ou `1.14.27` sont valides.
 
 ## Fonctionnalites
 
