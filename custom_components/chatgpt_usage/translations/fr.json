@@ -14,5 +14,26 @@
       "api_key_required": "Une cle API admin OpenAI est requise pour le mode OpenAI API Usage.",
       "codex_file_path_required": "Un chemin de fichier JSON Codex local est requis pour le mode fichier."
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Options ChatGPT Usage",
+        "data": {
+          "mode": "Mode",
+          "api_key": "Cle API admin OpenAI",
+          "org_id": "ID d'organisation",
+          "project_id": "ID de projet",
+          "currency": "Devise",
+          "scan_interval": "Intervalle de scan en secondes",
+          "enable_codex": "Activer les capteurs Codex experimentaux",
+          "codex_source": "Source Codex",
+          "codex_file_path": "Chemin du fichier JSON Codex local",
+          "mqtt_prefix": "Prefixe MQTT Codex",
+          "daily_cost_alert": "Seuil d'alerte cout journalier",
+          "codex_remaining_alert": "Seuil d'alerte restant Codex"
+        }
+      }
+    }
   }
 }

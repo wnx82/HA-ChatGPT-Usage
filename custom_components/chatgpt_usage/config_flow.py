@@ -31,7 +31,10 @@ from .const import (
     CODEX_SOURCES,
     CHATGPT_CODEX_USAGE_URL,
     DOMAIN,
+    MODES,
+    MODE_BOTH,
     MODE_CODEX_FILE,
+    MODE_OPENAI,
 )
 
 
@@ -62,6 +65,8 @@ def _default_config_data() -> dict[str, Any]:
 def _options_schema(defaults: dict[str, Any]) -> vol.Schema:
     return vol.Schema(
         {
+            vol.Required(CONF_MODE, default=defaults.get(CONF_MODE, MODE_CODEX_FILE)): vol.In(MODES),
+            vol.Optional(CONF_API_KEY, default=defaults.get(CONF_API_KEY, "")): str,
             vol.Optional(CONF_ORG_ID, default=defaults.get(CONF_ORG_ID, "")): str,
             vol.Optional(CONF_PROJECT_ID, default=defaults.get(CONF_PROJECT_ID, "")): str,
             vol.Optional(CONF_CURRENCY, default=defaults.get(CONF_CURRENCY, DEFAULT_CURRENCY)): str,
@@ -115,6 +120,25 @@ class ChatGPTUsageOptionsFlow(config_entries.OptionsFlow):
     async def async_step_init(self, user_input: dict[str, Any] | None = None) -> config_entries.FlowResult:
         """Manage integration options."""
         if user_input is not None:
+            errors: dict[str, str] = {}
+            mode = user_input.get(CONF_MODE, MODE_CODEX_FILE)
+            api_key = str(user_input.get(CONF_API_KEY, "")).strip()
+            codex_file_path = str(user_input.get(CONF_CODEX_FILE_PATH, "")).strip()
+
+            if mode in (MODE_OPENAI, MODE_BOTH) and not api_key:
+                errors[CONF_API_KEY] = "api_key_required"
+            if mode == MODE_CODEX_FILE and not codex_file_path:
+                errors[CONF_CODEX_FILE_PATH] = "codex_file_path_required"
+            if mode == MODE_BOTH and user_input.get(CONF_CODEX_SOURCE) == DEFAULT_CODEX_SOURCE and not codex_file_path:
+                errors[CONF_CODEX_FILE_PATH] = "codex_file_path_required"
+
+            if errors:
+                defaults = {**self._config_entry.data, **self._config_entry.options, **user_input}
+                return self.async_show_form(
+                    step_id="init",
+                    data_schema=_options_schema(defaults),
+                    errors=errors,
+                )
             return self.async_create_entry(title="", data=user_input)
         defaults = {**self._config_entry.data, **self._config_entry.options}
         return self.async_show_form(step_id="init", data_schema=_options_schema(defaults))

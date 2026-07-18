@@ -20,6 +20,8 @@
       "init": {
         "title": "ChatGPT Usage options",
         "data": {
+          "mode": "Mode",
+          "api_key": "OpenAI Admin API key",
           "org_id": "Organization ID",
           "project_id": "Project ID",
           "currency": "Currency",

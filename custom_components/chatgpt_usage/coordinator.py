@@ -45,7 +45,7 @@ class ChatGPTUsageCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         session = async_get_clientsession(hass)
         self.client = OpenAIUsageClient(
             session=session,
-            api_key=entry.data[CONF_API_KEY],
+            api_key=entry.options.get(CONF_API_KEY, entry.data.get(CONF_API_KEY, "")),
             org_id=entry.options.get(CONF_ORG_ID) or entry.data.get(CONF_ORG_ID),
             project_id=entry.options.get(CONF_PROJECT_ID) or entry.data.get(CONF_PROJECT_ID),
         )
