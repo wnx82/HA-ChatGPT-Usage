@@ -16,6 +16,16 @@ Exemples valides : `1.1.0`, `1.2.0`, `1.2.1`, `1.9.12`, `1.10.0`, `1.14.27`.
 
 Quand la version change, mettre a jour tous les fichiers qui portent la version projet : `package.json` si present, `README.md` si une version y est indiquee, `CHANGELOG.md`, `pyproject.toml`, `custom_components/chatgpt_usage/manifest.json`, `custom_components/chatgpt_usage/const.py`, `package-lock.json` si present, et tout autre fichier de configuration contenant une version projet.
 
+## [1.5.5] - 2026-07-18 Europe/Brussels
+
+### Changements
+- Correction du `config_flow` Home Assistant qui faisait echouer l'ouverture des options avec `AttributeError: property 'config_entry' of 'ChatGPTUsageOptionsFlow' object has no setter`.
+- Correction de la priorite des `entry.options` sur `entry.data` pour que le changement de mode depuis l'UI ou l'API soit bien applique au reload.
+- Ajout d'un test de non-regression sur la resolution du mode de configuration.
+
+### Tests
+- `python3 -m pytest` : OK, 11 tests passes.
+
 ## [1.5.4] - 2026-07-08 Europe/Brussels
 
 ### Changements

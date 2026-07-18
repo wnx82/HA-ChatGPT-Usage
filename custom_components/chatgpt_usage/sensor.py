@@ -87,7 +87,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     if coordinator is not None:
         entities.extend(ChatGPTUsageSensor(coordinator, entry, description) for description in OPENAI_SENSORS)
 
-    mode = entry.data.get(CONF_MODE)
+    mode = entry.options.get(CONF_MODE, entry.data.get(CONF_MODE))
     enable_codex = entry.options.get(CONF_ENABLE_CODEX, entry.data.get(CONF_ENABLE_CODEX, False))
     codex_source = entry.options.get(CONF_CODEX_SOURCE, entry.data.get(CONF_CODEX_SOURCE, DEFAULT_CODEX_SOURCE))
     if mode == MODE_CODEX_MQTT:

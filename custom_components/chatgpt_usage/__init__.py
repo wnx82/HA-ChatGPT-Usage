@@ -34,7 +34,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.data.setdefault(DOMAIN, {})
     coordinators = {}
-    mode = entry.data.get(CONF_MODE, MODE_OPENAI)
+    mode = entry.options.get(CONF_MODE, entry.data.get(CONF_MODE, MODE_OPENAI))
     if mode not in (MODE_CODEX_MQTT, MODE_CODEX_FILE):
         scan_interval = int(entry.options.get(CONF_SCAN_INTERVAL, entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)))
         coordinator = ChatGPTUsageCoordinator(hass, entry, timedelta(seconds=scan_interval))
